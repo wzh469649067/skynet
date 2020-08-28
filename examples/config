@@ -1,15 +1,21 @@
+-- 这个配置文件实际上就是一段 lua 代码，通常，我们以 key = value 的形式对配置项赋值。
+-- skynet 在启动时，会读取里面必要的配置项，并将暂时用不到的配置项以字符串形式保存在 skynet 内部的 env 表中。
+-- 这些配置项可以通过 skynet.getenv 获取。
 include "config.path"
 
 -- preload = "./examples/preload.lua"	-- run preload.lua before every lua service run
-thread = 8
-logger = nil
-logpath = "."
-harbor = 1
-address = "127.0.0.1:2526"
-master = "127.0.0.1:2013"
-start = "main"	-- main script
-bootstrap = "snlua bootstrap"	-- The service for bootstrap
-standalone = "0.0.0.0:2013"
+thread = 8  --启动多少个工作线程。通常不要将它配置超过你实际拥有的 CPU 核心数。
+logger = nil --skynet.error的输出，nil为标准输出，也可以指定文件。
+-- logservice = "logger" -- 可参考service_logger.c实现。也可以用lua编写，那么logservice = snlua ,logger = luaa服务名
+logpath = "."   -- logger文件的路径
+harbor = 1                      -- 节点数，可以是 1-255 间的任意整数
+-- harbor=0单节点模式，此时 master 和 address 以及 standalone 都不必设置
+address = "127.0.0.1:2526"      -- 当前 skynet 节点的地址和端口，方便其它节点和它组网。
+master = "127.0.0.1:2013"       -- 指定 skynet 控制中心的地址和端口，如果你配置了 standalone 项，那么这一项通常和 standalone 相同。
+start = "main"	-- main script  -- 工作文件的第一个启动文件，需要在luaservice中指定
+bootstrap = "snlua bootstrap"	-- skynet 启动的第一个服务以及其启动参数,service/bootstrap.lua
+standalone = "0.0.0.0:2013"     -- skynet 的主节点,开启一个监控端口让其他节点接入
 -- snax_interface_g = "snax_g"
-cpath = root.."cservice/?.so"
--- daemon = "./skynet.pid"
+cpath = root.."cservice/?.so"   -- C 编写的服务模块的位置，通常指 cservice 下那些 .so 文件。
+-- daemon = "./skynet.pid" -- 可以以后台模式启动 skynet 。注意，同时请配置 logger 项输出 log 。
+-- sharestring 调整服务的虚拟机间共享字符串的数量，默认为 4096 ，在某些情况下，调大这个数字可以减少整体内存的使用量。

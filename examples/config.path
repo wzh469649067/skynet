@@ -1,6 +1,7 @@
 root = "./"
-luaservice = root.."service/?.lua;"..root.."test/?.lua;"..root.."examples/?.lua;"..root.."test/?/init.lua"
-lualoader = root .. "lualib/loader.lua"
-lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua"
-lua_cpath = root .. "luaclib/?.so"
-snax = root.."examples/?.lua;"..root.."test/?.lua"
+luaservice = root.."service/?.lua;"..root.."test/?.lua;"..root.."examples/?.lua;"..root.."test/?/init.lua" -- lua 服务代码所在的位置。
+lualoader = root .. "lualib/loader.lua" -- 用哪一段 lua 代码加载 lua 服务。
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua" --将添加到 package.path 中的路径，供 require 调用。
+lua_cpath = root .. "luaclib/?.so" -- 将添加到 package.cpath 中的路径，供 require 调用。
+snax = root.."examples/?.lua;"..root.."test/?.lua" -- 用 snax 框架编写的服务的查找路径。
+-- profile 默认为 true, 可以用来统计每个服务使用了多少 cpu 时间。在 DebugConsole 中可以查看。会对性能造成微弱的影响，设置为 false 可以关闭这个统计。
